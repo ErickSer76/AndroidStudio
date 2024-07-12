@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'src/data/database_helper.dart'; // Asegúrate de importar correctamente tu archivo database_helper.dart
 import 'secon.dart';
@@ -11,15 +13,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: LoginScreen(),
     );
   }
 }
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginScreenState createState() {
+    return _LoginScreenState();
+  }
 }
 
 class _LoginScreenState extends State<LoginScreen> {
@@ -80,45 +86,45 @@ class _LoginScreenState extends State<LoginScreen> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [Colors.teal.shade400,Colors.teal.shade700 , Colors.teal.shade900],
-                stops: [0.3,0.7, 0.9],
+                stops: const [0.3,0.7, 0.9],
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   TextField(
                     controller: _usernameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Username',
                       filled: true,
                       fillColor: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 12.0),
+                  const SizedBox(height: 12.0),
                   TextField(
                     controller: _passwordController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Password',
                       filled: true,
                       fillColor: Colors.white,
                     ),
                     obscureText: true,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _login,
-                    child: Text('Login'),
+                    child: const Text('Login'),
                   ),
                   ElevatedButton(
                     onPressed: _register,
-                    child: Text('Register'),
+                    child: const Text('Register'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     _message,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16.0,
                     ),

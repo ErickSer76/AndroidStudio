@@ -1,20 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:proyect1/options/general_data.dart';
+import 'options/general_data.dart';
+import 'options/calificaciones.dart';
+
 class Homescreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(
-
-
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.teal.shade400,
+              ),
+              child: Image.asset(
+                'assets/img/Logo.png',
+              ),
+            ),
+            ListTile(
+              title: Text('General'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EstudiantesScreen()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Calificaciones'),
+              onTap: (){
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CalificacionesEst()),
+                );
+              },
+            )
+            // Otros elementos del Drawer
+          ],
+        ),
       ),
       appBar: AppBar(
         toolbarHeight: 140,
         backgroundColor: Colors.teal.shade400,
         title: Image.asset(
-          'assets/img/Logo.png', // ruta imagen
+          'assets/img/Logo.png',
         ),
-        centerTitle: true, // centra la imagen dentro del AppBar
+        centerTitle: true,
       ),
       body: Stack(
         children: [
@@ -38,7 +69,7 @@ class Homescreen extends StatelessWidget {
               height: 550,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30), // Bordes redondeados
+                borderRadius: BorderRadius.circular(30),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
@@ -48,8 +79,8 @@ class Homescreen extends StatelessWidget {
                   ),
                 ],
                 border: Border.all(
-                  color: Colors.grey, // Color del borde negro
-                  width: 3, // Grosor del borde
+                  color: Colors.grey,
+                  width: 3,
                 ),
               ),
               child: Center(
