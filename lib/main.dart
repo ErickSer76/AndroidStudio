@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:proyect1/options/admin.dart';
+import 'package:proyect1/options/alumno.dart';
+import 'package:proyect1/options/maestro.dart';
+import 'package:proyect1/options/admin.dart' show Homescreenadmin;
 import 'src/data/database_helper.dart'; // Asegúrate de importar correctamente tu archivo database_helper.dart
 import 'secon.dart';
 
@@ -44,10 +48,32 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _message = 'Login successful';
       });
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Homescreen()),
-      );
+      if (user['tipo_user'] == 'maestro') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Homescreenmaestro()),
+        );
+      } else if (user['tipo_user'] == 'admin'){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Homescreenadmin()),
+        );
+
+      } else if (user['tipo_user'] == 'alumno') {
+        Map<String, dynamic>? DatosEstudiante = await dbHelper
+            .getDatosEstudiante(user['id']);
+        if (DatosEstudiante != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) =>
+                Homescreenalumno(user: user, DatosEstudiante: DatosEstudiante)),
+          );
+        } else {
+          setState(() {
+            _message = 'Datos no encontrados';
+          });
+        }
+      }
     } else {
       setState(() {
         _message = 'Invalid credentials';
