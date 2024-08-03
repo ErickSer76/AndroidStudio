@@ -146,7 +146,7 @@ class _CalificacionesPorEstudianteState extends State<CalificacionesPorEstudiant
                           'Nombre: ${calificacion['nombre_est']} ${calificacion['apellido_est']}',
                           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        Text('Asignatura: ${calificacion['nombre_asi']}'),
+                        Text('Curso: ${calificacion['nombre_cui']}'),
                         Text('Parcial: ${calificacion['nombre_par']}'),
                         Text('Cuatrimestre: ${calificacion['nombre_cua']}'),
                         Text('Calificación: ${calificacion['calificacion_cal']}'),

@@ -45,8 +45,10 @@ class Homescreenmaestro extends StatelessWidget {
             ListTile(
               title: Text('Calificar'),
               onTap: (){
+                int profesorId = DatosProfesor['id_pro'];
                 Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CalificarScreen()),
+                  context, MaterialPageRoute(
+                    builder: (context) => CalificarScreen(profesorId: profesorId)),
                 );
               },
             ),

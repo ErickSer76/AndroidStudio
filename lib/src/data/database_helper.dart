@@ -41,7 +41,7 @@ class DatabaseHelper {
           "CREATE TABLE asignaturas(id_asi INTEGER PRIMARY KEY, id_car INTEGER, nombre_asi TEXT, descripcion_asi TEXT, FOREIGN KEY(id_car) REFERENCES carreras(id_car))",
         );
         await db.execute(
-          "CREATE TABLE calificaciones(id_cal INTEGER PRIMARY KEY, id_est INTEGER, id_car INTEGER, id_gru INTEGER, id_asi INTEGER, id_par INTEGER, id_cua INTEGER, calificacion_cal REAL, FOREIGN KEY(id_est) REFERENCES estudiantes(id_est), FOREIGN KEY(id_asi) REFERENCES asignaturas(id_asi), FOREIGN KEY(id_gru) REFERENCES grupos(id_gru), FOREIGN KEY(id_car) REFERENCES carreras(id_car), FOREIGN KEY(id_par) REFERENCES parcial(id_par), FOREIGN KEY(id_cua) REFERENCES cuatrimestre(id_cua))",
+          "CREATE TABLE calificaciones(id_cal INTEGER PRIMARY KEY, id_est INTEGER, id_car INTEGER, id_gru INTEGER, id_cui INTEGER, id_par INTEGER, id_cua INTEGER, calificacion_cal REAL, FOREIGN KEY(id_est) REFERENCES estudiantes(id_est), FOREIGN KEY(id_cui) REFERENCES curso_impartido(id_cui), FOREIGN KEY(id_gru) REFERENCES grupos(id_gru), FOREIGN KEY(id_car) REFERENCES carreras(id_car), FOREIGN KEY(id_par) REFERENCES parcial(id_par), FOREIGN KEY(id_cua) REFERENCES cuatrimestre(id_cua))",
         );
         await db.execute(
           "CREATE TABLE carreras(id_car INTEGER PRIMARY KEY, nombre_car TEXT)",
@@ -83,8 +83,8 @@ class DatabaseHelper {
         await db.insert('asignaturas', {'id_asi': 2, 'id_car':1, 'nombre_asi': 'Interconexion de redes', 'descripcion_asi': 'Curso de redes'});
         await db.insert('asignaturas', {'id_asi': 3, 'id_car':2, 'nombre_asi': 'Matematicas Aplicadas a la Gastronomia', 'descripcion_asi': 'Materia de Matematicas'});
 
-        await db.insert('calificaciones', {'id_cal': 1, 'id_est': 1, 'id_car':1, 'id_gru': 1, 'id_asi': 1, 'id_par': 1, 'id_cua': 1, 'calificacion_cal': 85.5});
-        await db.insert('calificaciones', {'id_cal': 2, 'id_est': 2, 'id_car':1, 'id_gru': 1, 'id_asi': 2, 'id_par': 2, 'id_cua': 1, 'calificacion_cal': 80.5});
+        await db.insert('calificaciones', {'id_cal': 1, 'id_est': 1, 'id_car':1, 'id_gru': 1, 'id_cui': 1, 'id_par': 1, 'id_cua': 1, 'calificacion_cal': 85.5});
+        await db.insert('calificaciones', {'id_cal': 2, 'id_est': 2, 'id_car':1, 'id_gru': 1, 'id_cui': 1, 'id_par': 2, 'id_cua': 1, 'calificacion_cal': 80.5});
 
         await db.insert('carreras', {'id_car': 1, 'nombre_car': 'Tecnologias de la Informacion'});
         await db.insert('carreras', {'id_car': 2, 'nombre_car': 'Gastronomia'});
@@ -447,15 +447,25 @@ class DatabaseHelper {
     );
   }
 
+  //FILTRO para obtener cursos impartidos por grupos y profesor
+  Future<List<Map<String, dynamic>>> getCursosImpartidosPorGrupoYProfesor(int idGrupo, int idProfesor) async {
+    final db = await database;
+    return await db.query(
+      'curso_impartido',
+      where: 'id_pro = ? AND id_gru = ?',
+      whereArgs: [idGrupo, idProfesor],
+    );
+  }
+
   //Obtener Calificaciones por estudiante
   Future<List<Map<String, dynamic>>> getCalificacionesPorEstudiante(int estudianteId) async {
     final db = await database;
     return await db.rawQuery('''
     SELECT calificaciones.*, estudiantes.nombre_est as nombre_est, estudiantes.apellido_est as apellido_est,  
-    asignaturas.nombre_asi as nombre_asi, parcial.nombre_par as nombre_par, cuatrimestre.nombre_cua as nombre_cua
+    curso_impartido.nombre_cui as nombre_cui, parcial.nombre_par as nombre_par, cuatrimestre.nombre_cua as nombre_cua
     FROM calificaciones
     INNER JOIN estudiantes ON calificaciones.id_est = estudiantes.id_est
-    INNER JOIN asignaturas ON calificaciones.id_asi = asignaturas.id_asi
+    INNER JOIN curso_impartido ON calificaciones.id_cui = curso_impartido.id_cui
     INNER JOIN parcial ON calificaciones.id_par = parcial.id_par
     INNER JOIN cuatrimestre ON calificaciones.id_cua = cuatrimestre.id_cua
     WHERE calificaciones.id_est = ?

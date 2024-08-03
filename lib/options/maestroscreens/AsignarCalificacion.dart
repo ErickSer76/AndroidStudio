@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '/src/data/database_helper.dart';
 
 class CalificarScreen extends StatefulWidget {
+  final int profesorId;
+
+  CalificarScreen({required this.profesorId});
+
   @override
   _CalificarScreenState createState() => _CalificarScreenState();
 }
@@ -35,7 +39,7 @@ class _CalificarScreenState extends State<CalificarScreen> {
     List<Map<String, dynamic>> cuatrimestres = await dbHelper.getCuatrimestres();
     List<Map<String, dynamic>> parciales = await dbHelper.getParciales();
     List<Map<String, dynamic>> grupos = await dbHelper.getGrupos();
-    List<Map<String, dynamic>> materias = await dbHelper.getMaterias();
+    List<Map<String, dynamic>> materias = await dbHelper.getCursosImpartidosPorProfesor(widget.profesorId);
     List<Map<String, dynamic>> alumnos = await dbHelper.getEstudiantes();
 
     setState(() {
@@ -68,12 +72,22 @@ class _CalificarScreenState extends State<CalificarScreen> {
     });
   }
 
+  Future<void> _fetchMateriasPorGrupoYProfesor(int idGrupo, int idProfesor) async {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    List<Map<String, dynamic>> materias = await dbHelper.getCursosImpartidosPorGrupoYProfesor(idGrupo, idProfesor);
+
+    setState(() {
+      _materias = materias;
+      _selectedMateriaId = null;
+    });
+  }
+
   Future<void> _agregarCalificacion() async {
     if (_formKey.currentState!.validate() && _selectedAlumnoId != null && _selectedMateriaId != null && _selectedParcialId != null) {
       DatabaseHelper dbHelper = DatabaseHelper();
       await dbHelper.insertCalificacion({
         'id_est': _selectedAlumnoId,
-        'id_asi': _selectedMateriaId,
+        'id_cui': _selectedMateriaId,
         'id_gru': _selectedGrupoId,
         'id_par': _selectedParcialId,
         'id_cua': _selectedCuatrimestreId,
@@ -146,16 +160,17 @@ class _CalificarScreenState extends State<CalificarScreen> {
                   setState(() {
                     _selectedGrupoId = value;
                     _fetchAlumnosPorGrupo(value!);
+                    _fetchMateriasPorGrupoYProfesor(value, widget.profesorId);
                   });
                 },
                 validator: (value) => value == null ? 'Seleccione un grupo' : null,
               ),
               DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Seleccionar Materia'),
+                decoration: InputDecoration(labelText: 'Seleccionar Curso'),
                 items: _materias.map((materia) {
                   return DropdownMenuItem<int>(
-                    value: materia['id_asi'],
-                    child: Text(materia['nombre_asi']),
+                    value: materia['id_cui'],
+                    child: Text(materia['nombre_cui']),
                   );
                 }).toList(),
                 onChanged: (value) {
@@ -163,7 +178,8 @@ class _CalificarScreenState extends State<CalificarScreen> {
                     _selectedMateriaId = value;
                   });
                 },
-                validator: (value) => value == null ? 'Seleccione una materia' : null,
+                value: _selectedMateriaId,
+                validator: (value) => value == null ? 'Seleccione un Curso' : null,
               ),
               DropdownButtonFormField<int>(
                 decoration: InputDecoration(labelText: 'Seleccionar Alumno'),
