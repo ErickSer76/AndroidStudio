@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:proyect1/options/maestroscreens/AsignarCalificacion.dart';
 import 'general_data.dart';
-import 'calificaciones.dart';
+import 'package:proyect1/main.dart';
 
 class Homescreenmaestro extends StatelessWidget {
+  final Map<String, dynamic> user;
+  final Map<String, dynamic> DatosProfesor;
+
+  Homescreenmaestro({ required this.user, required this.DatosProfesor});
+
+  void _logout(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (Route<dynamic> route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,13 +42,19 @@ class Homescreenmaestro extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Calificaciones'),
+              title: Text('Calificar'),
               onTap: (){
                 Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CalificacionesEst()),
+                  context, MaterialPageRoute(builder: (context) => CalificarScreen()),
                 );
               },
-            )
+            ),
+            ListTile(
+              title: Text('Cerrar Sesion'),
+              onTap: () {
+                _logout(context);
+              },
+            ),
             // Otros elementos del Drawer
           ],
         ),
@@ -83,15 +103,42 @@ class Homescreenmaestro extends StatelessWidget {
                   width: 3,
                 ),
               ),
-              child: Center(
-                child: Text(
-                  'Maestro',
+              child:Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                const Text(
+                'Profesor',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
+                ),
+                const SizedBox(height: 20),
+                Image.asset(
+                  'assets/img/user.jpg',
+                  width: 100,
+                  height: 100,
+                    ),
+                    SizedBox(height: 20),
+                    Text (
+                      'Nombre: ${DatosProfesor['nombre_pro']} ${DatosProfesor['apellido_pro']}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(height: 20),
+                    Text (
+                      'Edad: ${DatosProfesor['edad_pro']}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(height: 20),
+                    Text (
+                      'Direccion: ${DatosProfesor['direccion_pro']}',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
               ),
             ),

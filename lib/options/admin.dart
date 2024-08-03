@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:proyect1/options/adminscreens/Agregar.dart';
+import 'package:proyect1/options/adminscreens/Consultar.dart';
 import 'general_data.dart';
-import 'calificaciones.dart';
+import 'package:proyect1/main.dart';
 
 class Homescreenadmin extends StatelessWidget {
+
+  void _logout(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (Route<dynamic> route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,13 +39,27 @@ class Homescreenadmin extends StatelessWidget {
               },
             ),
             ListTile(
-              title: Text('Calificaciones'),
+              title: Text('Agregar'),
               onTap: (){
                 Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CalificacionesEst()),
+                  context, MaterialPageRoute(builder: (context) => AdminAgregarOpciones()),
                 );
               },
-            )
+            ),
+            ListTile(
+              title: Text('Consultar'),
+              onTap: (){
+                Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AdminConsultarOpciones()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Cerrar Sesion'),
+              onTap: () {
+                _logout(context);
+              },
+            ),
             // Otros elementos del Drawer
           ],
         ),
@@ -83,9 +108,13 @@ class Homescreenadmin extends StatelessWidget {
                   width: 3,
                 ),
               ),
-              child: Center(
-                child: Text(
-                  'Admin',
+              child:Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                const Text(
+                'Bienvenido Administrador',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
@@ -93,11 +122,20 @@ class Homescreenadmin extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
+                const SizedBox(height: 20),
+                Image.asset(
+                  'assets/img/user.jpg',
+                  width: 100,
+                  height: 100,
+
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ],
-      ),
+      )
     );
   }
 }

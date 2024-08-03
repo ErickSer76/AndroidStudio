@@ -6,7 +6,6 @@ import 'package:proyect1/options/alumno.dart';
 import 'package:proyect1/options/maestro.dart';
 import 'package:proyect1/options/admin.dart' show Homescreenadmin;
 import 'src/data/database_helper.dart'; // Asegúrate de importar correctamente tu archivo database_helper.dart
-import 'secon.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,10 +48,19 @@ class _LoginScreenState extends State<LoginScreen> {
         _message = 'Login successful';
       });
       if (user['tipo_user'] == 'maestro') {
+        Map<String, dynamic>? DatosProfesor = await dbHelper
+            .getDatosProfesor(user['id']);
+        if( DatosProfesor != null) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Homescreenmaestro()),
+          MaterialPageRoute(builder: (context) =>
+              Homescreenmaestro(user: user, DatosProfesor: DatosProfesor)),
         );
+        }  else {
+          setState(() {
+            _message = 'Datos no encontrados';
+          });
+        }
       } else if (user['tipo_user'] == 'admin'){
         Navigator.push(
           context,

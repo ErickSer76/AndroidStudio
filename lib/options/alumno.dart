@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyect1/main.dart';
+import 'package:proyect1/options/alumnoscreens/Calificacion.dart';
 import 'general_data.dart';
-import 'calificaciones.dart';
 
 class Homescreenalumno extends StatelessWidget {
   final Map<String, dynamic> user;
@@ -13,7 +13,7 @@ class Homescreenalumno extends StatelessWidget {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),
-        (Route<dynamic> route) => false,
+          (Route<dynamic> route) => false,
     );
   }
 
@@ -43,9 +43,14 @@ class Homescreenalumno extends StatelessWidget {
             ),
             ListTile(
               title: Text('Calificaciones'),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CalificacionesEst()),
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CalificacionesPorEstudiante(
+                      estudianteID: DatosEstudiante['id_est'],
+                    ),
+                  ),
                 );
               },
             ),
@@ -76,7 +81,7 @@ class Homescreenalumno extends StatelessWidget {
                 colors: [
                   Colors.teal.shade400,
                   Colors.teal.shade300,
-                  Colors.teal.shade200
+                  Colors.teal.shade200,
                 ],
                 stops: const [0.3, 0.7, 0.9],
               ),
@@ -102,7 +107,7 @@ class Homescreenalumno extends StatelessWidget {
                   width: 3,
                 ),
               ),
-              child:Padding(
+              child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -117,17 +122,17 @@ class Homescreenalumno extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                      Image.asset(
-                        'assets/img/user.jpg',
-                        width: 100,
-                        height: 100,
-                      ),
+                    Image.asset(
+                      'assets/img/user.jpg',
+                      width: 100,
+                      height: 100,
+                    ),
                     SizedBox(height: 20),
                     Text(
-                      'Nombre: ${DatosEstudiante['nombre_est']}',
+                      'Nombre: ${DatosEstudiante['nombre_est']} ${DatosEstudiante['apellido_est']}',
                       style: TextStyle(fontSize: 16),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 10),
                     Text(
                       'Edad: ${DatosEstudiante['edad_est']}',
                       style: TextStyle(fontSize: 16),
@@ -142,7 +147,7 @@ class Homescreenalumno extends StatelessWidget {
                       'Direccion: ${DatosEstudiante['direccion_est']}',
                       style: TextStyle(fontSize: 16),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 10),
                     Text(
                       'Grupo: ${DatosEstudiante['nombre_gru']}',
                       style: TextStyle(fontSize: 16),
@@ -152,8 +157,6 @@ class Homescreenalumno extends StatelessWidget {
                       'Carrera: ${DatosEstudiante['nombre_car']}',
                       style: TextStyle(fontSize: 16),
                     ),
-
-                    // Añade más campos según los datos disponibles del alumno.
                   ],
                 ),
               ),
@@ -164,5 +167,3 @@ class Homescreenalumno extends StatelessWidget {
     );
   }
 }
-
-
