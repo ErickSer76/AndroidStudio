@@ -32,8 +32,7 @@ class _CalificarScreenState extends State<CalificarScreen> {
   Future<void> _fetchInitialData() async {
     DatabaseHelper dbHelper = DatabaseHelper();
 
-    List<Map<String, dynamic>> cuatrimestres = await dbHelper
-        .getCuatrimestres();
+    List<Map<String, dynamic>> cuatrimestres = await dbHelper.getCuatrimestres();
     List<Map<String, dynamic>> parciales = await dbHelper.getParciales();
     List<Map<String, dynamic>> grupos = await dbHelper.getGrupos();
     List<Map<String, dynamic>> materias = await dbHelper.getMaterias();
@@ -49,7 +48,17 @@ class _CalificarScreenState extends State<CalificarScreen> {
     });
   }
 
-  Future <void> _fetchAlumnosPorGrupo(int idGrupo) async {
+  Future<void> _fetchParcialesPorCuatrimestre(int idCuatrimestre) async {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    List<Map<String, dynamic>> parciales = await dbHelper.getParcialesPorCuatrimestre(idCuatrimestre);
+
+    setState(() {
+      _parciales = parciales;
+      _selectedParcialId = null;
+    });
+  }
+
+  Future<void> _fetchAlumnosPorGrupo(int idGrupo) async {
     DatabaseHelper dbHelper = DatabaseHelper();
     List<Map<String, dynamic>> alumnos = await dbHelper.getEstudiantesPorGrupo(idGrupo);
 
@@ -104,6 +113,7 @@ class _CalificarScreenState extends State<CalificarScreen> {
                 onChanged: (value) {
                   setState(() {
                     _selectedCuatrimestreId = value;
+                    _fetchParcialesPorCuatrimestre(value!);
                   });
                 },
                 validator: (value) => value == null ? 'Seleccione un cuatrimestre' : null,
@@ -121,6 +131,7 @@ class _CalificarScreenState extends State<CalificarScreen> {
                     _selectedParcialId = value;
                   });
                 },
+                value: _selectedParcialId,
                 validator: (value) => value == null ? 'Seleccione un parcial' : null,
               ),
               DropdownButtonFormField<int>(
@@ -167,6 +178,7 @@ class _CalificarScreenState extends State<CalificarScreen> {
                     _selectedAlumnoId = value;
                   });
                 },
+                value: _selectedAlumnoId,
                 validator: (value) => value == null ? 'Seleccione un alumno' : null,
               ),
               TextFormField(

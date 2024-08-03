@@ -29,6 +29,10 @@ class DatosdeCursoImpartidoScreen extends StatelessWidget {
               style: TextStyle(fontSize: 16),
             ),
             Text(
+              'Grupo: ${cursoimpartido['nombre_gru']}',
+              style: TextStyle(fontSize: 16),
+            ),
+            Text(
               'Carrera: ${cursoimpartido['nombre_car']}',
               style: TextStyle(fontSize: 16),
             ),

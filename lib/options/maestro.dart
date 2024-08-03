@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyect1/options/maestroscreens/AsignarCalificacion.dart';
+import 'package:proyect1/options/maestroscreens/VerCursosImpartidos.dart';
 import 'general_data.dart';
 import 'package:proyect1/main.dart';
 
@@ -46,6 +47,18 @@ class Homescreenmaestro extends StatelessWidget {
               onTap: (){
                 Navigator.push(
                   context, MaterialPageRoute(builder: (context) => CalificarScreen()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Cursos Impartidos'),
+              onTap: () {
+                int profesorId = DatosProfesor['id_pro']; // Asegúrate de que el ID del profesor esté aquí
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ConsultarCursosImpartidosProfesorScreen(profesorId: profesorId),
+                  ),
                 );
               },
             ),
@@ -108,20 +121,20 @@ class Homescreenmaestro extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                const Text(
-                'Profesor',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Image.asset(
-                  'assets/img/user.jpg',
-                  width: 100,
-                  height: 100,
+                    const Text(
+                      'Profesor',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Image.asset(
+                      'assets/img/user.jpg',
+                      width: 100,
+                      height: 100,
                     ),
                     SizedBox(height: 20),
                     Text (
