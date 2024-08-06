@@ -57,6 +57,7 @@ class _AgregarMateriaScreenState extends State<AgregarMateriaScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Agregar Materia'),
+        backgroundColor: Colors.lightBlue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -65,7 +66,12 @@ class _AgregarMateriaScreenState extends State<AgregarMateriaScreen> {
           child: Column(
             children: [
               DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Carrera'),
+                decoration: InputDecoration(
+                  labelText: 'Carrera',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
                 value: _selectedCarreraId,
                 onChanged: (int? newValue) {
                   setState(() {
@@ -75,7 +81,10 @@ class _AgregarMateriaScreenState extends State<AgregarMateriaScreen> {
                 items: _carreras.map<DropdownMenuItem<int>>((Map<String, dynamic> carrera) {
                   return DropdownMenuItem<int>(
                     value: carrera['id_car'],
-                    child: Text(carrera['nombre_car']),
+                    child: Text(
+                      carrera['nombre_car'],
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   );
                 }).toList(),
                 validator: (value) {
@@ -85,9 +94,16 @@ class _AgregarMateriaScreenState extends State<AgregarMateriaScreen> {
                   return null;
                 },
               ),
+              SizedBox(height: 10),
               TextFormField(
                 controller: _nombreController,
-                decoration: InputDecoration(labelText: 'Nombre de Materia'),
+                decoration: InputDecoration(
+                  labelText: 'Nombre de Materia',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese el nombre de la materia';
@@ -95,9 +111,16 @@ class _AgregarMateriaScreenState extends State<AgregarMateriaScreen> {
                   return null;
                 },
               ),
+              SizedBox(height: 10),
               TextFormField(
                 controller: _descripcionController,
-                decoration: InputDecoration(labelText: 'Descripción'),
+                decoration: InputDecoration(
+                  labelText: 'Descripción',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese una descripción';
@@ -109,6 +132,13 @@ class _AgregarMateriaScreenState extends State<AgregarMateriaScreen> {
               ElevatedButton(
                 onPressed: _agregarMateria,
                 child: Text('Agregar Materia'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.lightBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                ),
               ),
             ],
           ),
@@ -117,4 +147,3 @@ class _AgregarMateriaScreenState extends State<AgregarMateriaScreen> {
     );
   }
 }
-

@@ -61,7 +61,7 @@ class _AgregarEstudianteScreenState extends State<AgregarEstudianteScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Estudiante Agregado con Exito'),
+          content: Text('Estudiante agregado con éxito'),
           duration: Duration(seconds: 2),
         ),
       );
@@ -72,7 +72,7 @@ class _AgregarEstudianteScreenState extends State<AgregarEstudianteScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Por favor, Llene todos los datos'),
+          content: Text('Por favor, llene todos los datos'),
           duration: Duration(seconds: 2),
         ),
       );
@@ -84,6 +84,7 @@ class _AgregarEstudianteScreenState extends State<AgregarEstudianteScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Agregar Estudiante'),
+        backgroundColor: Colors.lightBlue,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -98,15 +99,34 @@ class _AgregarEstudianteScreenState extends State<AgregarEstudianteScreen> {
             children: <Widget>[
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Usuario'),
+                decoration: InputDecoration(
+                  labelText: 'Usuario',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Contraseña'),
+                decoration: InputDecoration(
+                  labelText: 'Contraseña',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
                 obscureText: true,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: 'Tipo Usuario'),
+                decoration: InputDecoration(
+                  labelText: 'Tipo Usuario',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
                 value: _selectedTipoUsuario,
                 onChanged: (String? newValue) {
                   setState(() {
@@ -117,34 +137,79 @@ class _AgregarEstudianteScreenState extends State<AgregarEstudianteScreen> {
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value),
+                    child: Text(
+                      value,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   );
                 }).toList(),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               TextField(
                 controller: _nombreController,
-                decoration: InputDecoration(labelText: 'Nombre'),
+                decoration: InputDecoration(
+                  labelText: 'Nombre',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               TextField(
                 controller: _apellidoController,
-                decoration: InputDecoration(labelText: 'Apellido'),
+                decoration: InputDecoration(
+                  labelText: 'Apellido',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               TextField(
                 controller: _matriculaController,
-                decoration: InputDecoration(labelText: 'Matricula'),
+                decoration: InputDecoration(
+                  labelText: 'Matricula',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
                 keyboardType: TextInputType.number,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               TextField(
                 controller: _edadController,
-                decoration: InputDecoration(labelText: 'Edad'),
+                decoration: InputDecoration(
+                  labelText: 'Edad',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
                 keyboardType: TextInputType.number,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               TextField(
                 controller: _direccionController,
-                decoration: InputDecoration(labelText: 'Dirección'),
+                decoration: InputDecoration(
+                  labelText: 'Dirección',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Carrera'),
+                decoration: InputDecoration(
+                  labelText: 'Carrera',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
                 value: _selectedCarreraId,
                 onChanged: (int? newValue) {
                   setState(() {
@@ -154,12 +219,22 @@ class _AgregarEstudianteScreenState extends State<AgregarEstudianteScreen> {
                 items: _carreras.map<DropdownMenuItem<int>>((Map<String, dynamic> carrera) {
                   return DropdownMenuItem<int>(
                     value: carrera['id_car'],
-                    child: Text(carrera['nombre_car']),
+                    child: Text(
+                      carrera['nombre_car'],
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   );
                 }).toList(),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 10),
               DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Grupo'),
+                decoration: InputDecoration(
+                  labelText: 'Grupo',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
                 value: _selectedGrupoId,
                 onChanged: (int? newValue) {
                   setState(() {
@@ -169,14 +244,25 @@ class _AgregarEstudianteScreenState extends State<AgregarEstudianteScreen> {
                 items: _grupos.map<DropdownMenuItem<int>>((Map<String, dynamic> grupo) {
                   return DropdownMenuItem<int>(
                     value: grupo['id_gru'],
-                    child: Text(grupo['nombre_gru']),
+                    child: Text(
+                      grupo['nombre_gru'],
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   );
                 }).toList(),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _agregarEstudiante,
                 child: Text('Agregar Estudiante'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.lightBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                ),
               ),
             ],
           ),
@@ -185,4 +271,3 @@ class _AgregarEstudianteScreenState extends State<AgregarEstudianteScreen> {
     );
   }
 }
-

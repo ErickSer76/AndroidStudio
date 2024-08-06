@@ -10,7 +10,6 @@ class _AgregarCuatrimestreScreenState extends State<AgregarCuatrimestreScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nombreController = TextEditingController();
 
-
   Future<void> _agregarCuatrimestre() async {
     if (_formKey.currentState!.validate()) {
       DatabaseHelper dbHelper = DatabaseHelper();
@@ -31,6 +30,13 @@ class _AgregarCuatrimestreScreenState extends State<AgregarCuatrimestreScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Agregar Cuatrimestre'),
+        backgroundColor: Colors.lightBlue, // Establecer el color de AppBar
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -40,7 +46,13 @@ class _AgregarCuatrimestreScreenState extends State<AgregarCuatrimestreScreen> {
             children: [
               TextFormField(
                 controller: _nombreController,
-                decoration: InputDecoration(labelText: 'Nombre del Cuatrimestre'),
+                decoration: InputDecoration(
+                  labelText: 'Nombre del Cuatrimestre',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese el nombre del cuatrimestre';
@@ -52,6 +64,14 @@ class _AgregarCuatrimestreScreenState extends State<AgregarCuatrimestreScreen> {
               ElevatedButton(
                 onPressed: _agregarCuatrimestre,
                 child: Text('Agregar Cuatrimestre'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.lightBlue, // Color de fondo del botón
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                ),
               ),
             ],
           ),

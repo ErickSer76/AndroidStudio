@@ -30,18 +30,40 @@ class _AdminAgregarOpcionesState extends State<AdminAgregarOpciones> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Funciones Administrativas'),
+        backgroundColor: Colors.lightBlue,
       ),
-      body: ListView.builder(
-        itemCount: _funciones.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_funciones[index]['nombre']),
-            subtitle: Text(_funciones[index]['descripcion']),
-            onTap: () {
-              _navigateToFunction(context, _funciones[index]['nombre']);
-            },
-          );
-        },
+      body: Container(
+        padding: EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.lightBlueAccent,Colors.lightBlueAccent, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: ListView.builder(
+          itemCount: _funciones.length,
+          itemBuilder: (context, index) {
+            return Card(
+              color: Colors.white.withOpacity(0.9),
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+              child: ListTile(
+                title: Text(
+                  _funciones[index]['nombre'],
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+                ),
+                subtitle: Text(
+                  _funciones[index]['descripcion'],
+                  style: TextStyle(color: Colors.black54),
+                ),
+                onTap: () {
+                  _navigateToFunction(context, _funciones[index]['nombre']);
+                },
+                trailing: Icon(Icons.arrow_forward, color: Colors.lightBlue),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -50,20 +72,20 @@ class _AdminAgregarOpcionesState extends State<AdminAgregarOpciones> {
     switch (functionName) {
       case 'Estudiantes y Usuarios':
         Navigator.push(
-            context, 
-            MaterialPageRoute(builder: (context) => AgregarEstudianteScreen()),
-      );
+          context,
+          MaterialPageRoute(builder: (context) => AgregarEstudianteScreen()),
+        );
         break;
       case 'Profesores y Usuarios':
         Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AgregarProfesorScreen()),
+          context,
+          MaterialPageRoute(builder: (context) => AgregarProfesorScreen()),
         );
         break;
       case 'Cursos Impartidos':
         Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AgregarCursoImpartidoScreen()),
+          context,
+          MaterialPageRoute(builder: (context) => AgregarCursoImpartidoScreen()),
         );
         break;
       case 'Materias':
@@ -75,25 +97,25 @@ class _AdminAgregarOpcionesState extends State<AdminAgregarOpciones> {
       case 'Grupos':
         Navigator.push(
             context,
-          MaterialPageRoute(builder: (context) => AgregarGruposScreen())
+            MaterialPageRoute(builder: (context) => AgregarGruposScreen())
         );
         break;
       case 'Carreras':
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AgregarCarreraScreen())
+            context,
+            MaterialPageRoute(builder: (context) => AgregarCarreraScreen())
         );
         break;
       case 'Parciales':
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AgregarParcialScreen())
+            context,
+            MaterialPageRoute(builder: (context) => AgregarParcialScreen())
         );
         break;
       case 'Cuatrimestres':
         Navigator.push(
             context,
-          MaterialPageRoute(builder: (context) => AgregarCuatrimestreScreen())
+            MaterialPageRoute(builder: (context) => AgregarCuatrimestreScreen())
         );
         break;
       default:

@@ -19,7 +19,7 @@ class _AgregarParcialScreenState extends State<AgregarParcialScreen> {
     _fetchCuatrimestres();
   }
 
-  Future <void> _fetchCuatrimestres() async {
+  Future<void> _fetchCuatrimestres() async {
     try {
       List<Map<String, dynamic>> cuatrimestres = await DatabaseHelper().getCuatrimestres();
       setState(() {
@@ -55,6 +55,13 @@ class _AgregarParcialScreenState extends State<AgregarParcialScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Agregar Parcial'),
+        backgroundColor: Colors.lightBlue,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -64,7 +71,13 @@ class _AgregarParcialScreenState extends State<AgregarParcialScreen> {
             children: [
               TextFormField(
                 controller: _nombreController,
-                decoration: InputDecoration(labelText: 'Nombre de Parcial'),
+                decoration: InputDecoration(
+                  labelText: 'Nombre de Parcial',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
+                style: TextStyle(fontWeight: FontWeight.bold),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese el nombre del parcial';
@@ -72,10 +85,16 @@ class _AgregarParcialScreenState extends State<AgregarParcialScreen> {
                   return null;
                 },
               ),
+              SizedBox(height: 10),
               DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Cuatrimestre'),
+                decoration: InputDecoration(
+                  labelText: 'Cuatrimestre',
+                  filled: true,
+                  fillColor: Colors.lightBlueAccent.withOpacity(0.1),
+                  border: InputBorder.none,
+                ),
                 value: _selectedCuatrimestre,
-                onChanged: (int? newValue){
+                onChanged: (int? newValue) {
                   setState(() {
                     _selectedCuatrimestre = newValue;
                   });
@@ -97,6 +116,14 @@ class _AgregarParcialScreenState extends State<AgregarParcialScreen> {
               ElevatedButton(
                 onPressed: _agregarParcial,
                 child: Text('Agregar Parcial'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.lightBlue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                ),
               ),
             ],
           ),
