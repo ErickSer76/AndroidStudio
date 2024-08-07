@@ -33,15 +33,6 @@ class Homescreenalumno extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: Text('General'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => EstudiantesScreen()),
-                );
-              },
-            ),
-            ListTile(
               title: Text('Calificaciones'),
               onTap: () {
                 Navigator.push(

@@ -48,9 +48,12 @@ class _ConsultarCursosImpartidosProfesorScreenState extends State<ConsultarCurso
 
   @override
   Widget build(BuildContext context) {
+    const Color naranjaClaro = Color(0xFFFFC107); // Color naranja claro
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Consultar Cursos Impartidos'),
+        backgroundColor: naranjaClaro,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -58,38 +61,69 @@ class _ConsultarCursosImpartidosProfesorScreenState extends State<ConsultarCurso
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            DropdownButtonFormField<int>(
-              decoration: InputDecoration(labelText: 'Seleccionar Cuatrimestre'),
-              items: _cuatrimestres.map((cuatrimestre) {
-                return DropdownMenuItem<int>(
-                  value: cuatrimestre['id_cua'],
-                  child: Text(cuatrimestre['nombre_cua']),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedCuatrimestreId = value;
-                });
-                _fetchCursosImpartidos();
-              },
-              validator: (value) => value == null ? 'Seleccione un cuatrimestre' : null,
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: DropdownButtonFormField<int>(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  border: InputBorder.none,
+                  hintText: 'Seleccionar Cuatrimestre',
+                  hintStyle: TextStyle(color: Colors.grey),
+                ),
+                items: _cuatrimestres.map((cuatrimestre) {
+                  return DropdownMenuItem<int>(
+                    value: cuatrimestre['id_cua'],
+                    child: Text(cuatrimestre['nombre_cua']),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCuatrimestreId = value;
+                  });
+                  _fetchCursosImpartidos();
+                },
+                validator: (value) => value == null ? 'Seleccione un cuatrimestre' : null,
+              ),
             ),
+            SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: _cursos.length,
                 itemBuilder: (context, index) {
                   final curso = _cursos[index];
-                  return ListTile(
-                    title: Text(curso['nombre_cui']),
-                    subtitle: Text('ID: ${curso['id_cui']}'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetallesCursoImpartidoScreen(cursoId: curso['id_cui']),
-                        ),
-                      );
-                    },
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 5,
+                    child: ListTile(
+                      contentPadding: EdgeInsets.all(16),
+                      title: Text(
+                        curso['nombre_cui'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('ID: ${curso['id_cui']}'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetallesCursoImpartidoScreen(cursoId: curso['id_cui']),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 },
               ),

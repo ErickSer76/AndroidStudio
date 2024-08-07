@@ -104,9 +104,12 @@ class _CalificarScreenState extends State<CalificarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    const Color naranjaClaro = Color(0xFFFFC107); // Color naranja más claro
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Agregar Calificación'),
+        backgroundColor: naranjaClaro,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -116,102 +119,179 @@ class _CalificarScreenState extends State<CalificarScreen> {
           key: _formKey,
           child: Column(
             children: [
-              DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Seleccionar Cuatrimestre'),
-                items: _cuatrimestres.map((cuatrimestre) {
-                  return DropdownMenuItem<int>(
-                    value: cuatrimestre['id_cua'],
-                    child: Text(cuatrimestre['nombre_cua']),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCuatrimestreId = value;
-                    _fetchParcialesPorCuatrimestre(value!);
-                  });
-                },
-                validator: (value) => value == null ? 'Seleccione un cuatrimestre' : null,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: DropdownButtonFormField<int>(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    border: InputBorder.none,
+                    hintText: 'Seleccionar Cuatrimestre',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  items: _cuatrimestres.map((cuatrimestre) {
+                    return DropdownMenuItem<int>(
+                      value: cuatrimestre['id_cua'],
+                      child: Text(cuatrimestre['nombre_cua']),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCuatrimestreId = value;
+                      _fetchParcialesPorCuatrimestre(value!);
+                    });
+                  },
+                  validator: (value) => value == null ? 'Seleccione un cuatrimestre' : null,
+                ),
               ),
-              DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Seleccionar Parcial'),
-                items: _parciales.map((parcial) {
-                  return DropdownMenuItem<int>(
-                    value: parcial['id_par'],
-                    child: Text(parcial['nombre_par'].toString()),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedParcialId = value;
-                  });
-                },
-                value: _selectedParcialId,
-                validator: (value) => value == null ? 'Seleccione un parcial' : null,
+              SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: DropdownButtonFormField<int>(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    border: InputBorder.none,
+                    hintText: 'Seleccionar Parcial',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  items: _parciales.map((parcial) {
+                    return DropdownMenuItem<int>(
+                      value: parcial['id_par'],
+                      child: Text(parcial['nombre_par'].toString()),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedParcialId = value;
+                    });
+                  },
+                  value: _selectedParcialId,
+                  validator: (value) => value == null ? 'Seleccione un parcial' : null,
+                ),
               ),
-              DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Seleccionar Grupo'),
-                items: _grupos.map((grupo) {
-                  return DropdownMenuItem<int>(
-                    value: grupo['id_gru'],
-                    child: Text(grupo['nombre_gru']),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedGrupoId = value;
-                    _fetchAlumnosPorGrupo(value!);
-                    _fetchMateriasPorGrupoYProfesor(value, widget.profesorId);
-                  });
-                },
-                validator: (value) => value == null ? 'Seleccione un grupo' : null,
+              SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: DropdownButtonFormField<int>(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    border: InputBorder.none,
+                    hintText: 'Seleccionar Grupo',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  items: _grupos.map((grupo) {
+                    return DropdownMenuItem<int>(
+                      value: grupo['id_gru'],
+                      child: Text(grupo['nombre_gru']),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedGrupoId = value;
+                      _fetchAlumnosPorGrupo(value!);
+                      _fetchMateriasPorGrupoYProfesor(value, widget.profesorId);
+                    });
+                  },
+                  validator: (value) => value == null ? 'Seleccione un grupo' : null,
+                ),
               ),
-              DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Seleccionar Curso'),
-                items: _materias.map((materia) {
-                  return DropdownMenuItem<int>(
-                    value: materia['id_cui'],
-                    child: Text(materia['nombre_cui']),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedMateriaId = value;
-                  });
-                },
-                value: _selectedMateriaId,
-                validator: (value) => value == null ? 'Seleccione un Curso' : null,
+              SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: DropdownButtonFormField<int>(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    border: InputBorder.none,
+                    hintText: 'Seleccionar Curso',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  items: _materias.map((materia) {
+                    return DropdownMenuItem<int>(
+                      value: materia['id_cui'],
+                      child: Text(materia['nombre_cui']),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedMateriaId = value;
+                    });
+                  },
+                  value: _selectedMateriaId,
+                  validator: (value) => value == null ? 'Seleccione un Curso' : null,
+                ),
               ),
-              DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: 'Seleccionar Alumno'),
-                items: _alumnos.map((alumno) {
-                  return DropdownMenuItem<int>(
-                    value: alumno['id_est'],
-                    child: Text('${alumno['nombre_est']} ${alumno['apellido_est']}'),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedAlumnoId = value;
-                  });
-                },
-                value: _selectedAlumnoId,
-                validator: (value) => value == null ? 'Seleccione un alumno' : null,
+              SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: DropdownButtonFormField<int>(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    border: InputBorder.none,
+                    hintText: 'Seleccionar Alumno',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  items: _alumnos.map((alumno) {
+                    return DropdownMenuItem<int>(
+                      value: alumno['id_est'],
+                      child: Text('${alumno['nombre_est']} ${alumno['apellido_est']}'),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedAlumnoId = value;
+                    });
+                  },
+                  value: _selectedAlumnoId,
+                  validator: (value) => value == null ? 'Seleccione un alumno' : null,
+                ),
               ),
-              TextFormField(
-                controller: _calificacionController,
-                decoration: InputDecoration(labelText: 'Calificación'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese la calificación';
-                  }
-                  return null;
-                },
+              SizedBox(height: 16),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: TextFormField(
+                  controller: _calificacionController,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                    border: InputBorder.none,
+                    hintText: 'Calificación',
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor ingrese la calificación';
+                    }
+                    return null;
+                  },
+                ),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _agregarCalificacion,
                 child: Text('Agregar Calificación'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: naranjaClaro,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
               ),
             ],
           ),
