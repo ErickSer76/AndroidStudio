@@ -72,9 +72,12 @@ class _CalificacionesPorEstudianteState extends State<CalificacionesPorEstudiant
 
   @override
   Widget build(BuildContext context) {
+    const Color verdePrimario = Color(0xFF4CAF50); // Verde más atractivo
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Calificaciones del Estudiante'),
+        backgroundColor: verdePrimario,
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -83,80 +86,89 @@ class _CalificacionesPorEstudianteState extends State<CalificacionesPorEstudiant
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                DropdownButton<String>(
-                  hint: Text('Seleccionar Parcial'),
-                  value: _selectedParcial,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedParcial = newValue;
-                    });
-                  },
-                  items: _parciales.map<DropdownMenuItem<String>>((value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                DropdownButton<String>(
-                  hint: Text('Seleccionar Cuatrimestre'),
-                  value: _selectedCuatrimestre,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedCuatrimestre = newValue;
-                    });
-                  },
-                  items: _cuatrimestres.map<DropdownMenuItem<String>>((value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-              ],
+            // Filtros
+            DropdownButton<String>(
+              hint: Text('Seleccionar Parcial', style: TextStyle(color: verdePrimario)),
+              value: _selectedParcial,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedParcial = newValue;
+                });
+              },
+              items: _parciales.map<DropdownMenuItem<String>>((value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
+            const SizedBox(height: 16),
+            DropdownButton<String>(
+              hint: Text('Seleccionar Cuatrimestre', style: TextStyle(color: verdePrimario)),
+              value: _selectedCuatrimestre,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedCuatrimestre = newValue;
+                });
+              },
+              items: _cuatrimestres.map<DropdownMenuItem<String>>((value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
                   onPressed: _applyFilters,
                   child: Text('Aplicar Filtros'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: verdePrimario,
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: _clearFilters,
                   child: Text('Quitar Filtros'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey,
+                  ),
                 ),
               ],
             ),
+            const SizedBox(height: 16),
             Expanded(
               child: _filteredCalificaciones.isNotEmpty
                   ? ListView.builder(
                 itemCount: _filteredCalificaciones.length,
                 itemBuilder: (context, index) {
                   final calificacion = _filteredCalificaciones[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Nombre: ${calificacion['nombre_est']} ${calificacion['apellido_est']}',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        Text('Curso: ${calificacion['nombre_cui']}'),
-                        Text('Parcial: ${calificacion['nombre_par']}'),
-                        Text('Cuatrimestre: ${calificacion['nombre_cua']}'),
-                        Text('Calificación: ${calificacion['calificacion_cal']}'),
-                        Divider(thickness: 1, color: Colors.grey),
-                      ],
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    elevation: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Nombre: ${calificacion['nombre_est']} ${calificacion['apellido_est']}',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: verdePrimario),
+                          ),
+                          const SizedBox(height: 8),
+                          Text('Curso: ${calificacion['nombre_cui']}', style: TextStyle(fontSize: 16)),
+                          Text('Parcial: ${calificacion['nombre_par']}', style: TextStyle(fontSize: 16)),
+                          Text('Cuatrimestre: ${calificacion['nombre_cua']}', style: TextStyle(fontSize: 16)),
+                          Text('Calificación: ${calificacion['calificacion_cal']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: verdePrimario)),
+                        ],
+                      ),
                     ),
                   );
                 },
               )
-                  : Text('No hay calificaciones disponibles'),
+                  : Center(child: Text('No hay calificaciones disponibles', style: TextStyle(fontSize: 16))),
             ),
           ],
         ),
