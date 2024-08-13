@@ -50,11 +50,19 @@ class _ConsultarParcialesScreenState extends State<ConsultarParcialesScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Consultar Parciales'),
+        backgroundColor: Colors.blueAccent,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
+          : Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blueAccent, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Column(
           children: [
             Expanded(
@@ -62,41 +70,51 @@ class _ConsultarParcialesScreenState extends State<ConsultarParcialesScreen> {
                 itemCount: _parciales.length,
                 itemBuilder: (context, index) {
                   final parcial = _parciales[index];
-                  return ListTile(
-                    title: Text(parcial['nombre_par']),
-                    subtitle: Text('ID: ${parcial['id_par']}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () async {
-                        bool? confirm = await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Confirmar eliminación'),
-                            content: Text('¿Estás seguro de que quieres eliminar este parcial?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: Text('Cancelar'),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: Text('Eliminar'),
-                              ),
-                            ],
-                          ),
-                        );
-
-                        if (confirm == true) {
-                          _eliminarParcial(parcial['id_par']);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Parcial eliminado exitosamente')),
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        parcial['nombre_par'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('ID: ${parcial['id_par']}'),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () async {
+                          bool? confirm = await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Confirmar eliminación'),
+                              content: Text('¿Estás seguro de que quieres eliminar este parcial?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: Text('Eliminar'),
+                                ),
+                              ],
+                            ),
                           );
-                        }
+
+                          if (confirm == true) {
+                            _eliminarParcial(parcial['id_par']);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Parcial eliminado exitosamente')),
+                            );
+                          }
+                        },
+                      ),
+                      onTap: () {
+                        _fetchDatosParciales(parcial['id_par']);
                       },
                     ),
-                    onTap: () {
-                      _fetchDatosParciales(parcial['id_par']);
-                    },
                   );
                 },
               ),

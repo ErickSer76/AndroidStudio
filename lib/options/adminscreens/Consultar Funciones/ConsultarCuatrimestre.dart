@@ -26,9 +26,9 @@ class _ConsultarCuatrimestresScreenState extends State<ConsultarCuatrimestresScr
     });
   }
 
-  Future<void> _fetchDatosCuatrimestres(int cuatrimestresID) async {
+  Future<void> _fetchDatosCuatrimestres(int cuatrimestreID) async {
     DatabaseHelper dbHelper = DatabaseHelper();
-    Map<String, dynamic>? cuatrimestre = await dbHelper.getDatosCuatrimestre(cuatrimestresID);
+    Map<String, dynamic>? cuatrimestre = await dbHelper.getDatosCuatrimestre(cuatrimestreID);
     if (cuatrimestre != null) {
       Navigator.push(
         context,
@@ -39,7 +39,7 @@ class _ConsultarCuatrimestresScreenState extends State<ConsultarCuatrimestresScr
     }
   }
 
-  Future <void> _eliminarCuatrimestres(int cuatrimestreID) async {
+  Future<void> _eliminarCuatrimestres(int cuatrimestreID) async {
     DatabaseHelper dbHelper = DatabaseHelper();
     await dbHelper.deleteCuatrimestre(cuatrimestreID);
     _fetchCuatrimestres();
@@ -50,11 +50,19 @@ class _ConsultarCuatrimestresScreenState extends State<ConsultarCuatrimestresScr
     return Scaffold(
       appBar: AppBar(
         title: Text('Consultar Cuatrimestres'),
+        backgroundColor: Colors.lightBlue,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
+          : Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.lightBlueAccent, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Column(
           children: [
             Expanded(
@@ -62,17 +70,26 @@ class _ConsultarCuatrimestresScreenState extends State<ConsultarCuatrimestresScr
                 itemCount: _cuatrimestres.length,
                 itemBuilder: (context, index) {
                   final cuatrimestre = _cuatrimestres[index];
-                  return ListTile(
-                    title: Text(cuatrimestre['nombre_cua']),
-                    subtitle: Text('ID: ${cuatrimestre['id_cua']}'),
-                    trailing: IconButton (
-                      icon: Icon(Icons.delete, color: Colors.red),
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        cuatrimestre['nombre_cua'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('ID: ${cuatrimestre['id_cua']}'),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
                         onPressed: () async {
                           bool? confirm = await showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text('Confirmar eliminacion'),
-                              content: Text('¿Estas seguro de que quieres eliminar este cuatrimestre?'),
+                              title: Text('Confirmar eliminación'),
+                              content: Text('¿Estás seguro de que quieres eliminar este cuatrimestre?'),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(context, false),
@@ -83,20 +100,21 @@ class _ConsultarCuatrimestresScreenState extends State<ConsultarCuatrimestresScr
                                   child: Text('Eliminar'),
                                 ),
                               ],
-                            )
+                            ),
                           );
 
                           if (confirm == true) {
                             _eliminarCuatrimestres(cuatrimestre['id_cua']);
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Carrera eliminada exitosamente')),
-                              );
-                            }
-                          },
-                        ),
-                        onTap: () {
-                          _fetchDatosCuatrimestres(cuatrimestre['id_cua']);
+                              SnackBar(content: Text('Cuatrimestre eliminado exitosamente')),
+                            );
+                          }
+                        },
+                      ),
+                      onTap: () {
+                        _fetchDatosCuatrimestres(cuatrimestre['id_cua']);
                       },
+                    ),
                   );
                 },
               ),

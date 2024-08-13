@@ -29,19 +29,41 @@ class _AdminConsultarOpcionesState extends State<AdminConsultarOpciones> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Consultas y Edicion'),
+        title: Text('Consultas y Edición'),
+        backgroundColor: Colors.lightBlue,
       ),
-      body: ListView.builder(
-        itemCount: _funciones.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(_funciones[index]['nombre']),
-            subtitle: Text(_funciones[index]['descripcion']),
-            onTap: () {
-              _navigateToFunction(context, _funciones[index]['nombre']);
-            },
-          );
-        },
+      body: Container(
+        padding: EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.lightBlueAccent, Colors.lightBlueAccent, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: ListView.builder(
+          itemCount: _funciones.length,
+          itemBuilder: (context, index) {
+            return Card(
+              color: Colors.white.withOpacity(0.9),
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+              child: ListTile(
+                title: Text(
+                  _funciones[index]['nombre'],
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+                ),
+                subtitle: Text(
+                  _funciones[index]['descripcion'],
+                  style: TextStyle(color: Colors.black54),
+                ),
+                onTap: () {
+                  _navigateToFunction(context, _funciones[index]['nombre']);
+                },
+                trailing: Icon(Icons.arrow_forward, color: Colors.lightBlue),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -50,14 +72,14 @@ class _AdminConsultarOpcionesState extends State<AdminConsultarOpciones> {
     switch (functionName) {
       case 'Estudiantes':
         Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ConsultarEstudiantesScreen()),
-    );
+          context,
+          MaterialPageRoute(builder: (context) => ConsultarEstudiantesScreen()),
+        );
         break;
       case 'Profesores':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ConsultarProfesoresScreen())
+          MaterialPageRoute(builder: (context) => ConsultarProfesoresScreen()),
         );
         break;
       case 'Cursos Impartidos':
@@ -65,34 +87,35 @@ class _AdminConsultarOpcionesState extends State<AdminConsultarOpciones> {
           context,
           MaterialPageRoute(builder: (context) => ConsultarCursoImpartidoScreen()),
         );
+        break;
       case 'Materias':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ConsultarMateriasScreen())
+          MaterialPageRoute(builder: (context) => ConsultarMateriasScreen()),
         );
         break;
       case 'Grupos':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ConsultarGruposScreen())
+          MaterialPageRoute(builder: (context) => ConsultarGruposScreen()),
         );
         break;
       case 'Carreras':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ConsultarCarrerasScreen())
+          MaterialPageRoute(builder: (context) => ConsultarCarrerasScreen()),
         );
         break;
       case 'Parciales':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ConsultarParcialesScreen())
+          MaterialPageRoute(builder: (context) => ConsultarParcialesScreen()),
         );
         break;
       case 'Cuatrimestres':
         Navigator.push(
           context,
-        MaterialPageRoute(builder: (context) => ConsultarCuatrimestresScreen())
+          MaterialPageRoute(builder: (context) => ConsultarCuatrimestresScreen()),
         );
         break;
       default:

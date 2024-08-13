@@ -50,11 +50,19 @@ class _ConsultarGruposScreenState extends State<ConsultarGruposScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Consultar Grupos'),
+        backgroundColor: Colors.blueAccent,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
+          : Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blueAccent, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Column(
           children: [
             Expanded(
@@ -62,41 +70,51 @@ class _ConsultarGruposScreenState extends State<ConsultarGruposScreen> {
                 itemCount: _grupos.length,
                 itemBuilder: (context, index) {
                   final grupo = _grupos[index];
-                  return ListTile(
-                    title: Text(grupo['nombre_gru']),
-                    subtitle: Text('Fecha de Inicio: ${grupo['fechaini_gru']}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () async {
-                        bool? confirm = await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Confirmar eliminación'),
-                            content: Text('¿Estás seguro de que quieres eliminar este grupo?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: Text('Cancelar'),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: Text('Eliminar'),
-                              ),
-                            ],
-                          ),
-                        );
-
-                        if (confirm == true) {
-                          _eliminarGrupo(grupo['id_gru']);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Grupo eliminado exitosamente')),
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        grupo['nombre_gru'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('Fecha de Inicio: ${grupo['fechaini_gru']}'),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () async {
+                          bool? confirm = await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Confirmar eliminación'),
+                              content: Text('¿Estás seguro de que quieres eliminar este grupo?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: Text('Eliminar'),
+                                ),
+                              ],
+                            ),
                           );
-                        }
+
+                          if (confirm == true) {
+                            _eliminarGrupo(grupo['id_gru']);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Grupo eliminado exitosamente')),
+                            );
+                          }
+                        },
+                      ),
+                      onTap: () {
+                        _fetchDatosMateria(grupo['id_gru']);
                       },
                     ),
-                    onTap: () {
-                      _fetchDatosMateria(grupo['id_gru']);
-                    },
                   );
                 },
               ),

@@ -50,11 +50,19 @@ class _ConsultarCarrerasScreenState extends State<ConsultarCarrerasScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Consultar Carreras'),
+        backgroundColor: Colors.lightBlue,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
+          : Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.lightBlueAccent, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Column(
           children: [
             Expanded(
@@ -62,34 +70,43 @@ class _ConsultarCarrerasScreenState extends State<ConsultarCarrerasScreen> {
                 itemCount: _carreras.length,
                 itemBuilder: (context, index) {
                   final carrera = _carreras[index];
-                  return ListTile(
-                    title: Text(carrera['nombre_car']),
-                    subtitle: Text('ID: ${carrera['id_car']}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () async {
-                        bool? confirm = await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Confirmar eliminación'),
-                            content: Text('¿Estás seguro de que quieres eliminar esta carrera?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: Text('Cancelar'),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: Text('Eliminar'),
-                              ),
-                            ],
-                          ),
-                        );
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        carrera['nombre_car'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('ID: ${carrera['id_car']}'),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () async {
+                          bool? confirm = await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Confirmar eliminación'),
+                              content: Text('¿Estás seguro de que quieres eliminar esta carrera?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: Text('Eliminar'),
+                                ),
+                              ],
+                            ),
+                          );
 
-                        if (confirm == true) {
-                          _eliminarCarrera(carrera['id_car']);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Carrera eliminada exitosamente')),
+                          if (confirm == true) {
+                            _eliminarCarrera(carrera['id_car']);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Carrera eliminada exitosamente')),
                             );
                           }
                         },
@@ -97,13 +114,14 @@ class _ConsultarCarrerasScreenState extends State<ConsultarCarrerasScreen> {
                       onTap: () {
                         _fetchDatosCarreras(carrera['id_car']);
                       },
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
-    }
+      ),
+    );
   }
+}

@@ -50,11 +50,19 @@ class _ConsultarCursoImpartidoScreenState extends State<ConsultarCursoImpartidoS
     return Scaffold(
       appBar: AppBar(
         title: Text('Consultar Curso Impartido'),
+        backgroundColor: Colors.blueAccent,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
+          : Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blueAccent, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Column(
           children: [
             Expanded(
@@ -62,41 +70,51 @@ class _ConsultarCursoImpartidoScreenState extends State<ConsultarCursoImpartidoS
                 itemCount: _cursosimpartidos.length,
                 itemBuilder: (context, index) {
                   final cursoimpartido = _cursosimpartidos[index];
-                  return ListTile(
-                    title: Text(cursoimpartido['nombre_cui']),
-                    subtitle: Text('ID: ${cursoimpartido['id_cui']}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () async {
-                        bool? confirm = await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Confirmar eliminación'),
-                            content: Text('¿Estás seguro de que quieres eliminar este curso impartido?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: Text('Cancelar'),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: Text('Eliminar'),
-                              ),
-                            ],
-                          ),
-                        );
-
-                        if (confirm == true) {
-                          _eliminarCursoImpartido(cursoimpartido['id_cui']);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Curso impartido eliminado exitosamente')),
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        cursoimpartido['nombre_cui'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('ID: ${cursoimpartido['id_cui']}'),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () async {
+                          bool? confirm = await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Confirmar eliminación'),
+                              content: Text('¿Estás seguro de que quieres eliminar este curso impartido?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: Text('Eliminar'),
+                                ),
+                              ],
+                            ),
                           );
-                        }
+
+                          if (confirm == true) {
+                            _eliminarCursoImpartido(cursoimpartido['id_cui']);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Curso impartido eliminado exitosamente')),
+                            );
+                          }
+                        },
+                      ),
+                      onTap: () {
+                        _fetchDatosCursosImpartidos(cursoimpartido['id_cui']);
                       },
                     ),
-                    onTap: () {
-                      _fetchDatosCursosImpartidos(cursoimpartido['id_cui']);
-                    },
                   );
                 },
               ),

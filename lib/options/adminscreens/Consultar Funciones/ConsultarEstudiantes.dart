@@ -50,11 +50,19 @@ class _ConsultarEstudiantesScreenState extends State<ConsultarEstudiantesScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text('Consultar Estudiantes'),
+        backgroundColor: Colors.blueAccent,
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: const EdgeInsets.all(16.0),
+          : Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blueAccent, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Column(
           children: [
             Expanded(
@@ -62,41 +70,51 @@ class _ConsultarEstudiantesScreenState extends State<ConsultarEstudiantesScreen>
                 itemCount: _estudiantes.length,
                 itemBuilder: (context, index) {
                   final estudiante = _estudiantes[index];
-                  return ListTile(
-                    title: Text(estudiante['nombre_est']),
-                    subtitle: Text('Matricula: ${estudiante['matricula_est']}'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () async {
-                        bool? confirm = await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Confirmar eliminación'),
-                            content: Text('¿Estás seguro de que quieres eliminar este estudiante?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, false),
-                                child: Text('Cancelar'),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, true),
-                                child: Text('Eliminar'),
-                              ),
-                            ],
-                          ),
-                        );
-
-                        if (confirm == true) {
-                          _eliminarEstudianteYUsuario(estudiante['user_id']);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Estudiante eliminado exitosamente')),
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 10.0),
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        estudiante['nombre_est'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('Matricula: ${estudiante['matricula_est']}'),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () async {
+                          bool? confirm = await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Confirmar eliminación'),
+                              content: Text('¿Estás seguro de que quieres eliminar este estudiante?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, false),
+                                  child: Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, true),
+                                  child: Text('Eliminar'),
+                                ),
+                              ],
+                            ),
                           );
-                        }
+
+                          if (confirm == true) {
+                            _eliminarEstudianteYUsuario(estudiante['user_id']);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Estudiante eliminado exitosamente')),
+                            );
+                          }
+                        },
+                      ),
+                      onTap: () {
+                        _fetchDatosEstudiante(estudiante['user_id']);
                       },
                     ),
-                    onTap: () {
-                      _fetchDatosEstudiante(estudiante['user_id']);
-                    },
                   );
                 },
               ),
